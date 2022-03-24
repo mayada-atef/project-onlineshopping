@@ -5,6 +5,7 @@ router.post("/register", userController.add)
 router.get("/all", userController.show)
 router.get("/showsingle/:id",auth ,userController.showsingle)
 router.post("/login", userController.login)
+router.post("/loginAdmin", userController.loginAdmin)
 router.post("/logout",auth, userController.logout)
 router.post("/logoutAll",auth, userController.logoutAll)
 module.exports = router

@@ -59,6 +59,13 @@ const userSchema = new mongoose.Schema({
         type:Boolean,
         default:false
     },
+    type: {
+        type: String,
+        default: 'user',
+        trim: true,
+        enum: ['admin', 'user']
+    },
+
     tokens: [{
         token: {
             type:String
@@ -86,6 +93,15 @@ userSchema.statics.loginUser = async(email,password) => {
     return user
     
 }
+userSchema.statics.loginDashboard = async (email, password, type) => {
+    const user = await User.findOne({ email: email })
+    if (!user) throw new Error("invalid email")
+    const matched = await bcrypt.compare(password, user.password)
+    if (!matched) throw new Error("invalid upassword")
+    if (user.type != type) throw new Error("not admin")
+    return user
+}
+
 
 userSchema.methods.generateToken = async function () {
     const user = this
