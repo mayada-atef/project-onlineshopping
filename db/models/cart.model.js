@@ -5,10 +5,6 @@ const cartSchema = new mongoose.Schema({
         ref: "User",
         required: true
     },
-    amount: {
-        type: mongoose.Schema.Types.ObjectId,
-      default:1
-    },
     products: [{
         productId: {
             type: mongoose.Schema.Types.ObjectId,

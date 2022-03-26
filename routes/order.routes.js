@@ -7,6 +7,20 @@ router.get("/showall", orderController.showAllOrders)
 router.get("/showuserorder/:userId", orderController.showUserOrder)
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //add verifyToken
 // edit*********verifyTokenAndAdmin
 //delete******verifyTokenAndAdmin 

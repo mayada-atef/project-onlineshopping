@@ -35,5 +35,16 @@ const productscheme = new mongoose.Schema({
      
      
 }, { timestamps: true })
+
+// productscheme.virtual("pDetails", {
+//     ref: "Cart.products",
+//     localField: "_id",
+//     foreignField:"productId"
+// })
+productscheme.virtual("pDetails", {
+    ref: "Cart",
+    localField: "_id", //dh id bta3 meen?
+    foreignField:"productId"
+})
 const product = mongoose.model("product", productscheme)
 module.exports=product

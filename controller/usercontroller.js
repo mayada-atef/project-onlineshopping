@@ -18,25 +18,6 @@ class User{
             })
         }
     }
-    static loginAdmin = async (res, req) => {
-        try {
-            const user = await userModel.loginDashboard(req.body.email, req.body.password, "admin")
-            const token = await user.generateToken()
-            res.status(200).send({
-                apiStatus: true,
-                data: { user, token },
-                message: "logged in"
-            })
-        }
-        catch (e) {
-            res.status(500).send({
-                apiStatus: false,
-                errors: e.message,
-                message: "error in admin"
-            })
-        }
-
-    }
     static show = async(req, res)=>{
         try{
             const users = await userModel.find().sort({email:1})
@@ -72,7 +53,6 @@ class User{
             })
         }
     }
-    
     static login = async (req, res) => {
         const id=req.params.id
         try{
@@ -91,6 +71,25 @@ class User{
                 message:"error in showsingle"
             })
         }
+    }
+    static loginAdmin = async (res, req) => {
+        try {
+            const user = await userModel.loginDashboard(req.body.email, req.body.password, "admin")
+            const token = await user.generateToken()
+            res.status(200).send({
+                apiStatus: true,
+                data: { user, token },
+                message: "logged in"
+            })
+        }
+        catch (e) {
+            res.status(500).send({
+                apiStatus: false,
+                errors: e.message,
+                message: "error in admin"
+            })
+        }
+
     }
     static logout = async (req, res) => {
         

@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken")
 const authAdmin = async (req, res, next) => {
     try {
         const token = req.header("Authorization")
-        const decoded = jwt.verify(token, "g16")
+        const decoded = jwt.verify(token, "autho")
         const user = await User.findOne({
             _id: decoded._id,
             "tokens.token": token,
