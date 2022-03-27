@@ -1,3 +1,4 @@
+const { type } = require("express/lib/response")
 const mongoose = require("mongoose")
 const productscheme = new mongoose.Schema({
     name: {
@@ -30,10 +31,13 @@ const productscheme = new mongoose.Schema({
         color: { type: String},
         material:{ type: String}
         
-    }]
+    }],
+    categoryId: {
+         type: mongoose.Schema.Types.ObjectId,
+        ref: "Category",
+        required: true
+    }
        
-     
-     
 }, { timestamps: true })
 
 // productscheme.virtual("pDetails", {
@@ -41,10 +45,6 @@ const productscheme = new mongoose.Schema({
 //     localField: "_id",
 //     foreignField:"productId"
 // })
-productscheme.virtual("pDetails", {
-    ref: "Cart",
-    localField: "_id", //dh id bta3 meen?
-    foreignField:"productId"
-})
+
 const product = mongoose.model("product", productscheme)
 module.exports=product
