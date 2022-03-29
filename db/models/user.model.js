@@ -35,7 +35,6 @@ const userSchema = new mongoose.Schema({
         trim:true,
         required:true,
         minlength:6,
-        // match:
         validate(value){
             if(value.includes(this.name))
                 throw new Error('week password')
@@ -43,7 +42,7 @@ const userSchema = new mongoose.Schema({
     },
     age:{
         type:Number,
-        min:21,
+        min:20,
         max:60
     },
     image:{

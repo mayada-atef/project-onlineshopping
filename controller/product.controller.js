@@ -1,9 +1,9 @@
 const productmodel = require("../db/models/product.model")
 class product{
     static addproduct = async (req,res) => {
-       
+        
         try {
-        const product = new productmodel(req.body)
+        const product = new productmodel(req.body,{productimg:req.file.path})
             await product.save()
             res.status(200).send(
                 {
@@ -76,15 +76,32 @@ class product{
                 {
                     apistatus: false,
                     message: " error in show product ",
-                    errors:e.message
-                  
-                    
+                    errors:e.message       
                 }
-            )
-            
+            )   
+        }   
+    }
+    static showCategoryProdcuts = async (req, res) => {      
+          try {
+              const products = await productmodel.find({categoryId:req.params.categoryId})
+            res.status(200).send(
+                {
+                    apistatus: true,
+                    message: "products showed",
+                    data:products
+       
+                }
+            ) 
         }
-         
-          
+        catch (e) {
+              res.status(500).send(
+                {
+                    apistatus: false,
+                    message: " error in show product ",
+                    errors:e.message       
+                }
+            )   
+        }   
     }
     static deleteproduct = async (req, res) => {
         try{
@@ -108,7 +125,7 @@ class product{
     }
      static editproduct = async (req, res) => {
         try{
-            const product = await productmodel.findByIdAndUpdate(req.params.id,req.body,{runValidators:true})
+            const product = await productmodel.findByIdAndUpdate(req.params.id,req.body)
             res.status(200).send({
                     apistatus: false,
                     message: "  product  edited",
@@ -125,6 +142,16 @@ class product{
             })
             
          } 
+    }
+    static productImg = async (req, res) => {
+         const product = await productmodel.findByIdAndUpdate(req.params.id, {productimg: req.file.path})
+        // req.user.image = req.file.path
+        await req.user.save()
+        res.status(200).send({
+            apiStatus:true,
+            data: req.file,
+            message:"uploaded"
+        })
     }
     
 }

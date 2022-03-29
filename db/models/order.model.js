@@ -29,12 +29,12 @@ const orderscheme = new mongoose.Schema({
         type: String,
         default: "pending" //recived after recieve customer/user
     },
-    amount: {
-        type: Number, required: true
-       //  type: mongoose.Schema.Types.Number,
-        // ref:"Cart",
-        // required:true
-    },
+    // amount: {
+    //     type: Number, required: true
+    //    //  type: mongoose.Schema.Types.Number,
+    //     // ref:"Cart",
+    //     // required:true
+    // },
     adress:{type: Object,require:true}
     
    

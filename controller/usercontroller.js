@@ -91,6 +91,42 @@ class User{
         }
 
     }
+    static del = async(req,res)=>{
+        try {
+            const user = await userModel.findByIdAndDelete(req.params.id)
+            res.status(200).send({
+                apiStatus: true,
+                data: user,
+                message: "user deleted"
+            })
+        }
+        catch (e) {
+            res.status(500).send({
+                apiStatus: false,
+                errors: e.message,
+                message: "error in deleting"
+            })
+        }
+    }
+    static editWithToken = async(req,res)=>{
+        try{
+            const user = await userModel.findByIdAndUpdate(
+                req.user._id, req.body, {runValidators:true}
+            )
+            res.status(200).send({
+                apiStatus:true,
+                data:user,
+                message:"user deleted"
+            })
+        }
+        catch(e){
+            res.status(500).send({
+                apiStatus:false,
+                errors:e.message,
+                message:"error in deleting"
+            })
+        }
+    }
     static logout = async (req, res) => {
         
         try{
@@ -130,6 +166,36 @@ class User{
                 message:"error in logout"
             })
         }
+    }
+     static changePass = async(req, res)=>{
+        try{
+            req.user.password = req.body.password
+            await req.user.save()
+            res.status(200).send({
+                apiStatus:true,
+                data:"",
+                message:"changed"
+            })
+        }
+        catch(e){
+            res.status(500).send({
+                apiStatus:false,
+                data:"",
+                message:"cannot change"
+            })
+        }
+    }
+    static profile = async(req, res)=>{
+        res.status(200).send({data:req.user, apiStatus:true, message:"profile fetched"})
+    } 
+    static profileImg = async(req,res)=>{
+        req.user.image = req.file.path
+        await req.user.save()
+        res.status(200).send({
+            apiStatus:true,
+            data: req.file,
+            message:"uploaded"
+        })
     }
 }
 
