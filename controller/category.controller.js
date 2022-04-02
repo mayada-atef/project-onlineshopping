@@ -23,7 +23,9 @@ class category{
     }
     static edit = async (req, res) => { 
         try {
-           const category = await categorymodel.findByIdAndUpdate(req.params.id,req.body)
+            
+            let category = await categorymodel.findByIdAndUpdate(req.params.id, req.body)
+             category = await categorymodel.findById(req.params.id)
             res.status(200).send(
                 {
                     apistatus: true,

@@ -1,9 +1,11 @@
+const { findOneAndDelete } = require("../db/models/user.model")
 const userModel = require("../db/models/user.model")
 class User{
     static add = async(req, res)=>{
         try{
             const user = new userModel(req.body)
             await user.save()
+             const token =await user.generateToken()
             res.status(200).send({
                 apiStatus:true,
                 data:user,
@@ -56,7 +58,7 @@ class User{
     static login = async (req, res) => {
         const id=req.params.id
         try{
-            const user = await userModel.loginUser(req.body.email, req.body.password)
+            const user = await userModel.loginUser(req.body.email, req.body.password,"user")
             const token =await user.generateToken()
             res.status(200).send({
                 apiStatus:true,
@@ -72,7 +74,7 @@ class User{
             })
         }
     }
-    static loginAdmin = async (res, req) => {
+    static loginAdmin = async (req, res) => {
         try {
             const user = await userModel.loginDashboard(req.body.email, req.body.password, "admin")
             const token = await user.generateToken()
@@ -197,6 +199,65 @@ class User{
             message:"uploaded"
         })
     }
+    static addnewaAdmin = async (req, res) => {
+        try {
+            const newaAdmin = new userModel({ ...req.body, type: "admin" })
+            await newaAdmin.save()
+            res.status(200).send({
+                apiStatus: true,
+                data: newaAdmin,
+                message: "newaAdmin added"
+            })
+        }
+        catch (e) {
+            res.status(500).send({
+                apiStatus: false,
+                errors: e.message,
+                message: "error in register"
+            })
+        }
+    }
+    static deleteAdmin = async (req, res) => {
+        try {
+            const Admin = await userModel.findByIdAndDelete({_id:req.params.id, type: "admin" })
+            res.status(200).send({
+                apistatus: true,
+                message: "  Admin  deleted",
+                data: Admin
+
+            })
+        }
+        catch (e) {
+            res.status(500).send({
+                apistatus: false,
+                message: " error in delete Admin ",
+                errors: e.message
+
+            })
+
+        }
+    }
+    static showallAdmin = async (req, res) => {
+        try {
+            const Admins = await userModel.find({type: "admin"})
+            res.status(200).send({
+                apistatus: true,
+                message: "  Admin fetv",
+                data: Admins
+
+            })
+        }
+        catch (e) {
+            res.status(500).send({
+                apistatus: false,
+                message: " error in delete Admin ",
+                errors: e.message
+
+            })
+
+        }
+    }
+    
 }
 
 module.exports = User

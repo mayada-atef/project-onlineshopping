@@ -3,7 +3,7 @@ class product{
     static addproduct = async (req,res) => {
         
         try {
-        const product = new productmodel(req.body,{productimg:req.file.path})
+        const product = new productmodel(req.body)
             await product.save()
             res.status(200).send(
                 {
@@ -125,9 +125,14 @@ class product{
     }
      static editproduct = async (req, res) => {
         try{
-            const product = await productmodel.findByIdAndUpdate(req.params.id,req.body)
+            let product = await productmodel.findByIdAndUpdate(req.params.id, req.body)
+          
+            console.log(product)
+               product = await productmodel.findById(req.params.id)
+            console.log(product)
+            
             res.status(200).send({
-                    apistatus: false,
+                    apistatus: true,
                     message: "  product  edited",
                     data:product
                   
@@ -144,9 +149,10 @@ class product{
          } 
     }
     static productImg = async (req, res) => {
-         const product = await productmodel.findByIdAndUpdate(req.params.id, {productimg: req.file.path})
+        const productID=req.params.productID
+         const product = await productmodel.findByIdAndUpdate(productID,{productimg:req.file.path})
         // req.user.image = req.file.path
-        await req.user.save()
+        await product.save()
         res.status(200).send({
             apiStatus:true,
             data: req.file,

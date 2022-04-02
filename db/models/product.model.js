@@ -18,8 +18,8 @@ const productscheme = new mongoose.Schema({
         type: Number,
          required:true
     },
-    avalaibe: {
-        type: Boolean
+    size: {
+          type:String
     },
     description: {
         type:String

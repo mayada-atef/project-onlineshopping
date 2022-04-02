@@ -53,7 +53,7 @@ class Cart {
     }
 
     static delfromCart = async (req, res) => {
-        const productId = req.body.productId
+        const productId = req.params.productId
         try {
             const cart = await cartModel.findOne({ userId: req.user._id })
             console.log(cart.products)

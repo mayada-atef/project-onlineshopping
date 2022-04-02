@@ -84,11 +84,12 @@ userSchema.pre("save", async function(){
     if(user.isModified("password"))
         user.password = await bcrypt.hash(user.password, Number(process.env.passwordSalt))
 })
-userSchema.statics.loginUser = async(email,password) => {
+userSchema.statics.loginUser = async(email,password,type) => {
     const user = await User.findOne({ email: email })
     if (!user) throw new Error("invalid email")
     const matched = await bcrypt.compare(password, user.password)
     if (!matched) throw new Error("invalid password")
+    if (user.type != type) throw new Error("not user")
     return user
     
 }
